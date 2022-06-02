@@ -6,19 +6,48 @@ boolean phase5 = false;
 boolean phase6 = false;
 boolean phase7 = true;
 
+PFont myfont;  
+
 void setup()
 {
   size(1280, 720);
   background(255);
   
-  setupPhase7();
-}
+  setupPhase7(); 
+}                                     
 
 void draw()
 {
   if(phase7) // "phase7 -> phase6 -> phase5" 
   {
     drawPhase7();
+  }
+  else if(phase6)
+  {
+  }
+  else if(phase5)
+  {
+  }
+  else if(phase4)
+  {
+  }
+  else if(phase3)
+  {
+  }
+  else if(phase2)
+  {
+  }
+  else if(phase1)
+  {
+  }
+}
+
+void mousePressed()
+{
+  if(phase7) // "phase7 -> phase6 -> phase5" 
+  {
+    checkAllBlocksInRange();
+    checkAllButtonsInRange();
   }
   else if(phase6)
   {
