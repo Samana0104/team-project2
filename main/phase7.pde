@@ -1,4 +1,4 @@
-final int BLOCK_MAX = 13; // max of a part of modrian block on background 
+final int BLOCK_MAX = 13; // 몬드리안 블럭의 조각이 최대 13조각
 final int BLOCK_RECTANGLE = 4; // posX, posY, width, height
 final int BLOCK_COLOR = 4; // r, g, b, alpha
 
@@ -23,6 +23,11 @@ color[] colorList = new color[COLOR_LIST];
 float[][] phase7Button = new float[BUTTON_MAX][BUTTON_RECTANGLE];
 
 boolean isSubmission = false;
+boolean isEnding = false;
+
+PFont buttonFont;
+PFont explationFont;
+PFont gradeFont;
 
 void setupPhase7()
 {
@@ -30,15 +35,33 @@ void setupPhase7()
   initMondrianColorList();
   initAllMondrianBlockColors();
   createButtons();
+  buttonFont = createFont("andante.ttf", 50);
+  explationFont = createFont("GimhaeGayaB.ttf", 30);
+  gradeFont = createFont("I AM A PLAYER.ttf", 90);
+  
 }
 
 void drawPhase7()
 {
   pushStyle();
-  
   background(255);
-  drawRectangleButton();
   drawMondrianComposition();
+  
+  if(!isSubmission)
+  {
+    drawRectangleButton();
+    drawExplation();
+  }
+  else
+  {
+    moveMondrianBlock();
+  }
+  
+  if(isEnding)
+  {
+    drawGrade();
+    createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n우리의 대학 과제는 이렇게 마무리 되었습니다.");  
+  }
   
   popStyle();
 }
@@ -62,16 +85,38 @@ void drawRectangleButton()
 {
   pushStyle();
   chageCursorAfterCheckingButtonState();
-  fill(200, 200, 200);
+  
+  textFont(buttonFont);    
+  textAlign(CENTER, CENTER);
+  
+  fill(240, 240, 240);
   rect(phase7Button[BUTTON_AGAIN][0], phase7Button[BUTTON_AGAIN][1], 
   phase7Button[BUTTON_AGAIN][2], phase7Button[BUTTON_AGAIN][3]);
+  fill(0, 0, 0);
+  text("다시 그리기", phase7Button[BUTTON_AGAIN][0] + phase7Button[BUTTON_AGAIN][2]/2, phase7Button[BUTTON_AGAIN][1] + phase7Button[BUTTON_AGAIN][3]/2 - 5);
   
+  fill(240, 240, 240);
   rect(phase7Button[BUTTON_SUBMISSION][0], phase7Button[BUTTON_SUBMISSION][1], 
   phase7Button[BUTTON_SUBMISSION][2], phase7Button[BUTTON_SUBMISSION][3]);
+  fill(0, 0, 0);
+  text("제출하기", phase7Button[BUTTON_SUBMISSION][0] + phase7Button[BUTTON_SUBMISSION][2]/2, phase7Button[BUTTON_SUBMISSION][1] + phase7Button[BUTTON_SUBMISSION][3]/2 - 5);
+  
   popStyle();
 }
 
-
+void drawExplation()
+{
+  pushStyle();
+  
+  textFont(subtitleFont);
+  //textAlign();
+  fill(200);
+  rect(30, 90, 510, 180);
+  fill(0, 0, 0);
+  textLeading(60);
+  text("몬드리안 작품을 클릭해 색칠하세요\n마우스 좌 클릭 -> 색깔 조정\n마우스 우 클릭 -> 명암 조정", 40, 130);
+  popStyle();
+}
 void initMondrianBlock()
 {
   mondrianBlock[0][0] = 580;
@@ -140,6 +185,26 @@ void initMondrianBlock()
   mondrianBlock[12][3] = 270;
 }
 
+void drawGrade()
+{
+  pushStyle();
+  textFont(gradeFont);
+  
+  noFill();
+  stroke(255, 122, 122);
+  strokeWeight(4);
+  ellipse(800, 440, 200, 200); // 원을 만듬
+  
+  fill(255, 122, 122); // A+ 모양을 만듬
+  textAlign(CENTER, CENTER);
+  pushMatrix();
+  translate(800, 430);
+  rotate(-PI/12);
+  text("A+", 0, 0);
+  popMatrix();
+  popStyle();
+}
+
 void initMondrianColorList()
 {
   colorList[COLOR_RED] = color(255, 0, 0);
@@ -173,10 +238,13 @@ void createButtons()
 
 void checkAllBlocksInRange()
 {
+  if(isSubmission)
+    return;
+    
   for(int i=0; i<BLOCK_MAX; i++)
   {
-    if(mondrianBlock[i][0] <= mouseX && (mondrianBlock[i][0] + mondrianBlock[i][2]) >= mouseX
-    && mondrianBlock[i][1] <= mouseY && (mondrianBlock[i][1] + mondrianBlock[i][3]) >= mouseY)
+    if(mondrianBlock[i][0] < mouseX && (mondrianBlock[i][0] + mondrianBlock[i][2]) > mouseX
+    && mondrianBlock[i][1] < mouseY && (mondrianBlock[i][1] + mondrianBlock[i][3]) > mouseY)
     {
       if(mouseButton == LEFT)
         changeMondrianBlockColor(i);
@@ -188,6 +256,9 @@ void checkAllBlocksInRange()
 
 void checkAllButtonsInRange()
 {
+  if(isSubmission)
+    return;
+  
   for(int i=0; i<BUTTON_MAX; i++)
   {
     if(phase7Button[i][0] <= mouseX && (phase7Button[i][0] + phase7Button[i][2]) >= mouseX
@@ -199,6 +270,9 @@ void checkAllButtonsInRange()
           initAllMondrianBlockColors();
         else if(i == BUTTON_SUBMISSION)
           isSubmission = true;
+          
+        cursor(ARROW);
+        return;
       }
     }
   }  
@@ -206,6 +280,11 @@ void checkAllButtonsInRange()
 
 void chageCursorAfterCheckingButtonState()
 {
+  if(isSubmission)
+  {
+    return;
+  }
+  
   for(int i=0; i<BUTTON_MAX; i++)
   {
     if(phase7Button[i][0] <= mouseX && (phase7Button[i][0] + phase7Button[i][2]) >= mouseX
@@ -249,4 +328,23 @@ void changeMondrianBlockColorAlpha(int blockIndex)
   
   if(mondrianBlockColorAlpha[blockIndex] < 30)
     mondrianBlockColorAlpha[blockIndex] = 255;
+}
+
+void moveMondrianBlock()
+{
+  if(isEnding)
+    return;
+    
+  for(int i=0; i<BLOCK_MAX; i++)
+  {
+    if(mondrianBlock[i][0] >= 330)
+    {
+      mondrianBlock[i][0] -= 3;
+    }
+    else
+    {
+      isEnding = true;
+      return;
+    }
+  }
 }
