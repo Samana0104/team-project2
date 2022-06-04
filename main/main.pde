@@ -4,7 +4,7 @@ boolean phase3 = false;
 boolean phase4 = false;
 boolean phase5 = false;
 boolean phase6 = false;
-boolean phase7 = true;
+boolean phase7 = false;
 
 PFont subtitleFont;
 
@@ -12,8 +12,9 @@ void setup()
 {
   size(1280, 720);
   background(255);
-  subtitleFont = createFont("JejuMyeongjo.ttf", 30);
+  subtitleFont = createFont("JejuMyeongjo.ttf", 50);
   
+  setupPhase1();
   setupPhase7(); 
 }                                     
 
@@ -31,6 +32,7 @@ void draw()
   }
   else if(phase4)
   {
+    drawPhase4();
   }
   else if(phase3)
   {
@@ -40,6 +42,7 @@ void draw()
   }
   else if(phase1)
   {
+    drawPhase1();
   }
 }
 
@@ -47,8 +50,8 @@ void mousePressed()
 {
   if(phase7) // "phase7 -> phase6 -> phase5" 
   {
-    checkAllBlocksInRange();
-    checkAllButtonsInRange();
+    checkAllBlocksInRange(); // 마우스가 페이즈7 블록 범위 안에 있는지 확인한다.
+    checkAllButtonsInRange(); // 마우스가 페이즈7 버튼 범위 안에 있는지 확인한다.
   }
   else if(phase6)
   {

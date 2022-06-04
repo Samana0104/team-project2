@@ -34,33 +34,31 @@ void setupPhase7()
   initMondrianBlock();
   initMondrianColorList();
   initAllMondrianBlockColors();
+  initPhase7Font();
   createButtons();
-  buttonFont = createFont("andante.ttf", 50);
-  explationFont = createFont("GimhaeGayaB.ttf", 30);
-  gradeFont = createFont("I AM A PLAYER.ttf", 90);
-  
 }
 
 void drawPhase7()
 {
   pushStyle();
-  background(255);
-  drawMondrianComposition();
   
-  if(!isSubmission)
+  background(255);
+  drawMondrianComposition(); // 몬드리안 작품을 그린다
+  
+  if(!isSubmission) // 만약 과제 제출을 안했다면
   {
-    drawRectangleButton();
-    drawExplation();
+    drawRectangleButton(); // 버튼을 그린다
+    drawExplation(); // 왼쪽 위의 설명을 그린다.
   }
   else
   {
-    moveMondrianBlock();
+    moveMondrianBlock(); // 만약 과제 제출을 했다면 몬드리안 작품을 중앙으로 옮긴다.
   }
   
-  if(isEnding)
+  if(isEnding) // 만약 작품이 다 옮겨져서 끝이 났다면
   {
-    drawGrade();
-    createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n우리의 대학 과제는 이렇게 마무리 되었습니다.");  
+    drawGrade(); // A+ 그림을 블럭위에 띄운다.
+    createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n우리의 대학 과제는 이렇게 마무리 되었습니다.");  // 자막을 만든다.
   }
   
   popStyle();
@@ -221,6 +219,13 @@ void initAllMondrianBlockColors()
     mondrianBlockColorAlpha[i] = 255;
     mondrianBlockColor[i] = colorList[COLOR_WHITE];
   }
+}
+
+void initPhase7Font()
+{
+  buttonFont = createFont("andante.ttf", 50);
+  explationFont = createFont("GimhaeGayaB.ttf", 30);
+  gradeFont = createFont("I AM A PLAYER.ttf", 90);  
 }
 
 void createButtons()
