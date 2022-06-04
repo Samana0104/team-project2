@@ -26,7 +26,7 @@ boolean isSubmission = false;
 boolean isEnding = false;
 
 PFont buttonFont;
-PFont explationFont;
+PFont explanationFont;
 PFont gradeFont;
 
 void setupPhase7()
@@ -106,7 +106,7 @@ void drawExplation()
 {
   pushStyle();
   
-  textFont(subtitleFont);
+  textFont(explanationFont);
   //textAlign();
   fill(200);
   rect(30, 90, 510, 180);
@@ -224,7 +224,7 @@ void initAllMondrianBlockColors()
 void initPhase7Font()
 {
   buttonFont = createFont("andante.ttf", 50);
-  explationFont = createFont("GimhaeGayaB.ttf", 30);
+  explanationFont = createFont("GimhaeGayaB.ttf", 30);
   gradeFont = createFont("I AM A PLAYER.ttf", 90);  
 }
 

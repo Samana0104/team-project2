@@ -1,10 +1,10 @@
-boolean phase1 = true;
+boolean phase1 = false;
 boolean phase2 = false;
 boolean phase3 = false;
 boolean phase4 = false;
 boolean phase5 = false;
 boolean phase6 = false;
-boolean phase7 = false;
+boolean phase7 = true;
 
 PFont subtitleFont;
 
@@ -12,7 +12,7 @@ void setup()
 {
   size(1280, 720);
   background(255);
-  subtitleFont = createFont("JejuMyeongjo.ttf", 50);
+  subtitleFont = createFont("JejuMyeongjo.ttf", 30);
   
   setupPhase1();
   setupPhase7(); 

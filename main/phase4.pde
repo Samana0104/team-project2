@@ -10,6 +10,7 @@ void drawPhase4()
   drawModrianPiece3(); // 작품3을 그린다.
 
   viewParticularModrianPieceUnderMouse(); // 마우스 커서 위치에 따라 작품을 표시한다
+  createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n우리의 대학 과제는 이렇게 마무리 되었습니다.");  // 자막을 만든다.
   popStyle();
 }
 

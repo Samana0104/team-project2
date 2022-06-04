@@ -1,8 +1,8 @@
-PFont titleFont;
-
 float[] titleTextPoint = new float[2]; // x, y
 
 boolean isDrawingTitle = true;
+
+PFont titleFont;
 
 void setupPhase1()
 {
@@ -16,11 +16,11 @@ void drawPhase1()
   pushStyle();
   background(#C4E6F0);
   
-  drawMainBackground();
-  drawSungYeonCharacter();
-  drawSubinCharacter();
-  drawHanbitCharacter();
-  drawMainTitle();
+  drawMainBackground(); // 백그라운드를 그린다.
+  drawSungYeonCharacter(); // 승연 캐릭터를 그린다.
+  drawHanbitCharacter(); // 한빛 캐릭터를 그린다.
+  drawSubinCharacter(); // 수빈 캐릭터를 그린다.
+  drawMainTitle(); // 메인 타이틀을 그린다.
 
   //button
   fill(0);
@@ -261,7 +261,7 @@ void moveTitle()
    if(!isDrawingTitle)
     return;
     
-  titleTextPoint[0] += 5.0;
+  titleTextPoint[0] += 3.0;
   
   if(titleTextPoint[0] >= 150.0)
   {
