@@ -23,7 +23,7 @@ color[] colorList = new color[COLOR_LIST];
 float[][] phase7Button = new float[BUTTON_MAX][BUTTON_RECTANGLE];
 
 boolean isSubmission = false;
-boolean isEnding = false;
+boolean isPhase7Ending = false;
 
 PFont buttonFont;
 PFont explanationFont;
@@ -35,7 +35,7 @@ void setupPhase7()
   initMondrianColorList();
   initAllMondrianBlockColors();
   initPhase7Font();
-  createButtons();
+  createPhase7Buttons();
 }
 
 void drawPhase7()
@@ -47,7 +47,7 @@ void drawPhase7()
   
   if(!isSubmission) // 만약 과제 제출을 안했다면
   {
-    drawRectangleButton(); // 버튼을 그린다
+    drawPhase7Button(); // 버튼을 그린다
     drawExplation(); // 왼쪽 위의 설명을 그린다.
   }
   else
@@ -55,7 +55,7 @@ void drawPhase7()
     moveMondrianBlock(); // 만약 과제 제출을 했다면 몬드리안 작품을 중앙으로 옮긴다.
   }
   
-  if(isEnding) // 만약 작품이 다 옮겨져서 끝이 났다면
+  if(isPhase7Ending) // 만약 작품이 다 옮겨져서 끝이 났다면
   {
     drawGrade(); // A+ 그림을 블럭위에 띄운다.
     createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n우리의 대학 과제는 이렇게 마무리 되었습니다.");  // 자막을 만든다.
@@ -67,6 +67,7 @@ void drawPhase7()
 void drawMondrianComposition()
 {
   pushStyle();
+  
   strokeWeight(3);
   
   for(int i=0; i<BLOCK_MAX; i++)
@@ -79,23 +80,23 @@ void drawMondrianComposition()
   popStyle();
 }
 
-void drawRectangleButton()
+void drawPhase7Button()
 {
   pushStyle();
-  chageCursorAfterCheckingButtonState();
+  changeCursorAfterCheckingPhase7ButtonState();
   
   textFont(buttonFont);    
   textAlign(CENTER, CENTER);
   
   fill(240, 240, 240);
   rect(phase7Button[BUTTON_AGAIN][0], phase7Button[BUTTON_AGAIN][1], 
-  phase7Button[BUTTON_AGAIN][2], phase7Button[BUTTON_AGAIN][3]);
+  phase7Button[BUTTON_AGAIN][2], phase7Button[BUTTON_AGAIN][3], 10);
   fill(0, 0, 0);
   text("다시 그리기", phase7Button[BUTTON_AGAIN][0] + phase7Button[BUTTON_AGAIN][2]/2, phase7Button[BUTTON_AGAIN][1] + phase7Button[BUTTON_AGAIN][3]/2 - 5);
   
   fill(240, 240, 240);
   rect(phase7Button[BUTTON_SUBMISSION][0], phase7Button[BUTTON_SUBMISSION][1], 
-  phase7Button[BUTTON_SUBMISSION][2], phase7Button[BUTTON_SUBMISSION][3]);
+  phase7Button[BUTTON_SUBMISSION][2], phase7Button[BUTTON_SUBMISSION][3], 10);
   fill(0, 0, 0);
   text("제출하기", phase7Button[BUTTON_SUBMISSION][0] + phase7Button[BUTTON_SUBMISSION][2]/2, phase7Button[BUTTON_SUBMISSION][1] + phase7Button[BUTTON_SUBMISSION][3]/2 - 5);
   
@@ -223,12 +224,12 @@ void initAllMondrianBlockColors()
 
 void initPhase7Font()
 {
-  buttonFont = createFont("andante.ttf", 50);
+  buttonFont = createFont("andante.ttf", 45);
   explanationFont = createFont("GimhaeGayaB.ttf", 30);
   gradeFont = createFont("I AM A PLAYER.ttf", 90);  
 }
 
-void createButtons()
+void createPhase7Buttons()
 {
   phase7Button[BUTTON_AGAIN][0] = 100;
   phase7Button[BUTTON_AGAIN][1] = 400;
@@ -241,7 +242,7 @@ void createButtons()
   phase7Button[BUTTON_SUBMISSION][3] = 100;  
 }
 
-void checkAllBlocksInRange()
+void checkAllPhase7BlocksInRange()
 {
   if(isSubmission)
     return;
@@ -255,11 +256,14 @@ void checkAllBlocksInRange()
         changeMondrianBlockColor(i);
       else if(mouseButton == RIGHT)
         changeMondrianBlockColorAlpha(i);  
+        
+      cursor(ARROW);
+      return;
     }
   }
 }
 
-void checkAllButtonsInRange()
+void checkAllPhase7ButtonsInRange()
 {
   if(isSubmission)
     return;
@@ -283,12 +287,10 @@ void checkAllButtonsInRange()
   }  
 }
 
-void chageCursorAfterCheckingButtonState()
+void changeCursorAfterCheckingPhase7ButtonState()
 {
   if(isSubmission)
-  {
     return;
-  }
   
   for(int i=0; i<BUTTON_MAX; i++)
   {
@@ -337,7 +339,7 @@ void changeMondrianBlockColorAlpha(int blockIndex)
 
 void moveMondrianBlock()
 {
-  if(isEnding)
+  if(isPhase7Ending)
     return;
     
   for(int i=0; i<BLOCK_MAX; i++)
@@ -348,7 +350,7 @@ void moveMondrianBlock()
     }
     else
     {
-      isEnding = true;
+      isPhase7Ending = true;
       return;
     }
   }

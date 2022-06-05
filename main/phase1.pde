@@ -1,62 +1,96 @@
 float[] titleTextPoint = new float[2]; // x, y
 
 boolean isDrawingTitle = true;
+boolean isGameStart = false;
 
-PFont titleFont;
+PFont titleFont; // 우당탕탕 팀플 스토리
+PFont titleFont2; // - 미술관 ver -
+PFont gameStartButtonFont; // 게임 시작 폰트
+
+float[] phase1Button = new float[4]; // x Pos, y Pos, width, height
 
 void setupPhase1()
 {
-  titleFont = createFont("JSArirang.ttf", 50);
-  titleTextPoint[0] = 0.0;
-  titleTextPoint[1] = 100.0;
+  initPhase1Font();
+  initTitleTextPoint();
+  createPhase1Button();
 }
 
 void drawPhase1()
 {
-  pushStyle();
-  background(#C4E6F0);
-  
   drawMainBackground(); // 백그라운드를 그린다.
   drawSungYeonCharacter(); // 승연 캐릭터를 그린다.
   drawHanbitCharacter(); // 한빛 캐릭터를 그린다.
   drawSubinCharacter(); // 수빈 캐릭터를 그린다.
   drawMainTitle(); // 메인 타이틀을 그린다.
-
-  //button
-  fill(0);
-  noStroke();
-  rect(1000,600,250,100);
+  drawPhase1Button(); // 게임 스타트 버튼을 그린다.
   
-  popStyle();
+  if(isGameStart) // 만약 게임 스타트가 시작했다면
+  {
+    if(viewFadingOutEffect()) // fade out 효과를 주고 fade out 효과가 끝나면 다음 페이즈로 넘어감
+      phase2 = true;
+  }
+}
+
+void initPhase1Font()
+{
+  titleFont = createFont("LeeSeoyun.ttf", 80);
+  titleFont2 = createFont("Batang.ttf", 35);
+  gameStartButtonFont = createFont("JejuHallasan.ttf", 40);  
+}
+
+void initTitleTextPoint()
+{
+  titleTextPoint[0] = 0.0;
+  titleTextPoint[1] = 150.0;
+}
+
+void createPhase1Button()
+{
+  phase1Button[0] = 1000;
+  phase1Button[1] = 600;
+  phase1Button[2] = 250;
+  phase1Button[3] = 100;  
 }
 
 void drawMainBackground()
 {
-  drawBackgroundGround();
-  drawBackgroundSun();
-  drawBackgroundMuseum();
-  drawBackgroundRoad();
+  drawBackgroundGround(); // 배경을 그린다.
+  drawBackgroundSun(); // 해를 그린다.
+  drawBackgroundMuseum(); // 미술관관을 그린다.
+  drawBackgroundRoad(); // 길을 그린다.
 }
 
 void drawBackgroundGround()
 {
+  pushStyle();
+  
+  background(#C4E6F0);
   //ground
   fill(#80CB79);
   noStroke();
   arc(560,1800,4700,3000,0,TWO_PI);  
+  
+  popStyle();
 }
 
 void drawBackgroundSun()
 {
+  pushStyle();
+  
   //sun
   fill(#F79E0C);
   stroke(#FC9C00);
   strokeWeight(2);
   arc(0,0,250,250,0,HALF_PI);
+  
+  popStyle();
 }
 
 void drawBackgroundMuseum()
 {
+  pushStyle();
+  
   //art museum (roof)
   fill(#DED8CE);
   stroke(#C6C0B6);
@@ -158,14 +192,20 @@ void drawBackgroundMuseum()
 
   for (int x=1200; x<1250; x+=10)
     line(x,120,x,420); 
+    
+  popStyle();
 }
 
 void drawBackgroundRoad()
 {
+  pushStyle();
+  
  //road
   fill(#A0867B);
   noStroke();
   quad(810,440,710,720,1210,720,1110,440); 
+  
+  popStyle();
 }
 
 void drawSungYeonCharacter()
@@ -210,6 +250,8 @@ void drawSungYeonCharacter()
 
 void drawSubinCharacter()
 {
+  pushStyle();
+  
   // 수빈 옷
   fill(#E5A0E4);
   noStroke();
@@ -228,10 +270,14 @@ void drawSubinCharacter()
   stroke(#E7E852);
   strokeWeight(2);
   ellipse(585,460,30,150);  
+  
+  popStyle();
 }
 
 void drawHanbitCharacter()
 {
+  pushStyle();
+  
   // 한빛 옷
   fill(#1B0089);
   noStroke();
@@ -243,17 +289,88 @@ void drawHanbitCharacter()
   noStroke();
   ellipse(350,400,170,180);
   rect(265,310,170,80);
+  
+  popStyle();
 }
 
 void drawMainTitle()
 {  
-  //title
   pushStyle();
-  fill(0);
+  
+  //title
   textFont(titleFont);
+  
+  fill(0);
   text("우당탕탕", titleTextPoint[0], titleTextPoint[1]);
+ 
+  fill(255, 0, 0);
+  text("팀플", titleTextPoint[0] + 30, titleTextPoint[1] + 80);
+  
+  fill(0);
+  text("스토리", titleTextPoint[0] + 150, titleTextPoint[1] + 80);
+  
+  textFont(titleFont2);
+  fill(100);
+  text("- 미술관 ver -", titleTextPoint[0] + 30, titleTextPoint[1] + 130);
+  
   moveTitle();
+  
   popStyle();
+}
+
+void drawPhase1Button()
+{
+  pushStyle();
+  
+  changeCursorAfterCheckingPhase1ButtonState();
+  
+  textFont(gameStartButtonFont);    
+  textAlign(CENTER, CENTER);
+  noStroke();
+  
+  fill(230);
+  rect(phase1Button[0], phase1Button[1], 
+  phase1Button[2], phase1Button[3], 10);
+  
+  fill(0, 0, 0);
+  text("게임 시작", phase1Button[0] + phase1Button[2]/2, phase1Button[1] + phase1Button[3]/2 - 5);
+  
+  popStyle();
+}
+
+void checkAllPhase1ButtonsInRange()
+{
+  if(isGameStart)
+    return;
+  
+  if(phase1Button[0] <= mouseX && (phase1Button[0] + phase1Button[2]) >= mouseX
+    && phase1Button[1] <= mouseY && (phase1Button[1] + phase1Button[3]) >= mouseY)
+  {
+    if(mouseButton == LEFT)
+    {
+      isGameStart = true;
+          
+      cursor(ARROW);
+      return;
+    }
+  }    
+}
+
+void changeCursorAfterCheckingPhase1ButtonState()
+{
+  if(isGameStart)
+  {
+    return;
+  }
+  
+  if(phase1Button[0] <= mouseX && (phase1Button[0] + phase1Button[2]) >= mouseX
+    && phase1Button[1] <= mouseY && (phase1Button[1] + phase1Button[3]) >= mouseY)
+  {
+    cursor(HAND);
+    return;
+  } 
+  
+  cursor(ARROW);  
 }
 
 void moveTitle()
@@ -263,9 +380,6 @@ void moveTitle()
     
   titleTextPoint[0] += 3.0;
   
-  if(titleTextPoint[0] >= 150.0)
-  {
+  if(titleTextPoint[0] >= 180.0)
     isDrawingTitle = false;
-    println(titleTextPoint[0]);
-  }  
 }
