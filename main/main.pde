@@ -3,8 +3,8 @@ boolean phase2 = false; // 미술관 입구
 boolean phase3 = false; // 미술관 내부 작품 관람
 boolean phase4 = false; // 정전 효과 발생 장면
 boolean phase5 = false; // 휴대폰 찾는 장면
-boolean phase6 = false;
-boolean phase7 = false;
+boolean phase6 = false; // 중간 검은화면 자막 장면
+boolean phase7 = false; // 마지막 몬드리안 작품 제작 장면
 
 PFont subtitleFont; // 자막 폰트
 
@@ -21,6 +21,7 @@ void setup()
   setupPhase3();
   setupPhase4();
   setupPhase5();
+  setupPhase6();
   setupPhase7(); 
 }                                     
 
@@ -32,6 +33,7 @@ void draw()
   }
   else if(phase6)
   {
+    drawPhase6();
   }
   else if(phase5)
   {
@@ -64,9 +66,12 @@ void mousePressed()
   }
   else if(phase6)
   { 
+    changePhase6Subtitle();
   }
   else if(phase5)
   {
+    changePhase5Subtitle();
+    checkPhoneInRange();
   }
   else if(phase4)
   {
@@ -136,40 +141,4 @@ boolean viewFadingInEffect() // 전환 효과 후반부 / 효과 주는게 끝�
     fadingHeight -= 9.0;
     return false;
   }
-}
-
-// 버튼 두개이상 경우 써야하는 참조만 하시고 안 쓰시는 걸 추천합니다.
-boolean rectangleButton(int x, int y, int w, int h) 
-{
-  fill(255, 23, 23);
-  rect(x, y, w, h);  
-  
-  if((mouseX >= x && mouseX <= x+w) && (mouseY >= y && mouseY <= y+h)) // 디자인 수정을 원하시면 fill만 수정하시면 됩니다.
-  {
-     fill(76, 225, 250);
-     rect(x, y, w, h);
-     
-     if(mousePressed && mouseButton == LEFT) //버튼을 눌렀을 때
-       return true;
-  }
-  
-  return false;
-}
-
-// 버튼 두개이상 경우 써야하는 참조만 하시고 안 쓰시는 걸 추천합니다.
-boolean circleButton(int x, int y, int r) // x = buttonX, y = buttonY, r = button radius , return = button state on Clicking 
-{
-  fill(255, 23, 23);
-  ellipse(x, y, r*2, r*2);  
-  
-  if(sqrt(pow(abs(mouseX-x), 2)+pow(abs(mouseY-y), 2)) <= r) // 디자인 수정을 원하시면 fill만 수정하시면 됩니다.
-  {
-     fill(76, 225, 250);
-     ellipse(x, y, r*2, r*2);
-     
-     if(mousePressed && mouseButton == LEFT) //버튼을 눌렀을 때
-       return true;
-  }
-  
-  return false;
 }
