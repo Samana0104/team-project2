@@ -58,7 +58,7 @@ void drawPhase7()
   if(isPhase7Ending) // 만약 작품이 다 옮겨져서 끝이 났다면
   {
     drawGrade(); // A+ 그림을 블럭위에 띄운다.
-    createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n우리의 대학 과제는 이렇게 마무리 되었습니다.");  // 자막을 만든다.
+    createSubtitle("열심히 노력해서 좋은 점수를 받은 셋.\n승연, 한빛, 수빈의 대학 과제는 이렇게 마무리 되었습니다.");  // 자막을 만든다.
   }
   
   popStyle();
